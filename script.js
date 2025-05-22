@@ -1,12 +1,11 @@
-const categorySelect = document.getElementById("category-select");
-const variationButtons = document.getElementById("variation-buttons");
-const armyImage = document.getElementById("army-image");
-const fullscreenToggle = document.getElementById("fullscreen-toggle");
-const fullscreenOverlay = document.getElementById("fullscreen-overlay");
-const fullscreenImage = document.getElementById("fullscreen-image");
-const mapDropdown = document.getElementById("map-dropdown");
-const mapResult = document.getElementById("map-result");
+// Main controls
+const categorySelect = document.getElementById('category-select');
+const variationButtons = document.getElementById('variation-buttons');
+const armyImage = document.getElementById('army-image');
+const modeToggle = document.getElementById('mode-toggle');
+const fullscreenToggle = document.getElementById('fullscreen-toggle');
 
+// Image map data
 const imageMap = {
   german: {
     "German Army": "german.jpg",
@@ -26,115 +25,134 @@ const imageMap = {
   }
 };
 
-const mapInfo = {
-  "Stalingrad": ["Soviet Armed Forces", "German Army Winter Camo"],
-  "Kursk": ["Soviet Armed Forces", "German Army Winter Camo"],
-  "Kharkov": ["Soviet Armed Forces", "German Army Winter Camo"],
-  "Carentan": ["United States Army", "German Army"],
-  "Utah Beach": ["United States Army", "German Army"],
-  "Omaha Beach": ["United States Army", "German Army"],
-  "Foy": ["United States Army Winter Camo", "German Army Winter Camo"],
-  "Hurtgen Forest": ["United States Army Winter Camo", "German Army Winter Camo"],
-  "Purple Heart Lane": ["United States Army", "German Army"],
-  "Sainte-Mère-Église": ["United States Army", "German Army"],
-  "Hill 400": ["United States Army Winter Camo", "German Army Winter Camo"],
-  "Remagen": ["United States Army", "German Army"],
-  "El Alamein": ["British Eighth Army", "German Africa Corps"],
-  "Sainte-Marie-du-Mont": ["United States Army", "German Army"],
-  "Driel": ["British Army", "German Army"],
-  "St. Marie du Mont": ["United States Army", "German Army"],
-  "Hill 93": ["Soviet Armed Forces", "German Army"],
-  "Kherson": ["Soviet Armed Forces", "German Army Winter Camo"]
-};
+let currentCategory = 'german';
+let currentVariation = '';
+let fromMapBlock = false; // Flag to track if the faction is selected from the map block
 
-function populateCategories() {
-  for (const faction in imageMap) {
-    const option = document.createElement("option");
-    option.value = faction;
-    option.textContent = faction.toUpperCase();
-    categorySelect.appendChild(option);
-  }
-}
-
+// Update variations
 function updateVariations() {
+  const category = categorySelect.value;
+  currentCategory = category;
+  const variations = imageMap[category];
+
   variationButtons.innerHTML = "";
-
-  const selectedFaction = categorySelect.value;
-  const variations = imageMap[selectedFaction];
-
-  for (const variation in variations) {
-    const btn = document.createElement("button");
+  Object.keys(variations).forEach((variation, index) => {
+    const btn = document.createElement('button');
     btn.textContent = variation;
     btn.onclick = () => {
-      armyImage.src = variations[variation];
+      showImage(category, variation);
+      currentVariation = variation;
+      document.querySelectorAll('#variation-buttons button')
+              .forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     };
     variationButtons.appendChild(btn);
-  }
 
-  // ✅ Automatically select the first variation
-  const firstBtn = variationButtons.querySelector("button");
-  if (firstBtn) firstBtn.click();
+    // Auto-select first variation unless coming from map block
+    if (!fromMapBlock && index === 0) {
+      btn.click();
+    }
+  });
+
+  fromMapBlock = false; // Reset after use
 }
 
+// Show the image based on the selected variation
+function showImage(category, variation) {
+  armyImage.classList.remove('visible'); // Reset fade-in
+  armyImage.src = imageMap[category][variation];
+  armyImage.alt = variation;
+
+  setTimeout(() => {
+    armyImage.classList.add('visible'); // Trigger fade-in
+  }, 100);
+}
+
+// Toggle between dark and light mode
 function toggleMode() {
-  document.body.classList.toggle("light-mode");
-  const isLight = document.body.classList.contains("light-mode");
-  document.getElementById("mode-toggle").textContent = isLight ? "☀️" : "🌙";
+  const isLight = document.body.classList.toggle('light-mode');
+  modeToggle.textContent = isLight ? '☀️' : '🌙';
 }
 
-function enterFullscreen() {
-  fullscreenImage.src = armyImage.src;
-  fullscreenOverlay.classList.add("active");
-  document.documentElement.requestFullscreen();
-  fullscreenToggle.style.display = "none";
-}
+// Fullscreen toggle
+fullscreenToggle.onclick = () => {
+  const isFs = document.body.classList.toggle('fullscreen-mode');
+  fullscreenToggle.classList.toggle('active', isFs);
+};
 
-function exitFullscreen() {
-  fullscreenOverlay.classList.remove("active");
-  fullscreenToggle.style.display = "inline-block";
-  if (document.fullscreenElement) {
-    document.exitFullscreen();
+// Map selector
+const mapSelect = document.getElementById('map-select');
+const mapResult = document.getElementById('map-result');
+
+const mapData = {
+  "Carentan": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Driel": { allies: { category: 'british', variation: 'British Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "El Alamein": { allies: { category: 'british', variation: 'British Eighth Army' }, axis: { category: 'german', variation: 'German Africa Corps' } },
+  "Elsenborn Ridge": { allies: { category: 'us', variation: 'United States Army Winter Camo' }, axis: { category: 'german', variation: 'German Army Winter Camo' } },
+  "Foy": { allies: { category: 'us', variation: 'United States Army Winter Camo' }, axis: { category: 'german', variation: 'German Army Winter Camo' } },
+  "Hill 400": { allies: { category: 'us', variation: 'United States Army Winter Camo' }, axis: { category: 'german', variation: 'German Army Winter Camo' } },
+  "Hürtgen Forest": { allies: { category: 'us', variation: 'United States Army Winter Camo' }, axis: { category: 'german', variation: 'German Army Winter Camo' } },
+  "Kharkov": { allies: { category: 'soviet', variation: 'Soviet Armed Forces' }, axis: { category: 'german', variation: 'German Army Winter Camo' } },
+  "Kursk": { allies: { category: 'soviet', variation: 'Soviet Armed Forces' }, axis: { category: 'german', variation: 'German Army' } },
+  "Mortain": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Omaha Beach": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Purple Heart Lane": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Remagen": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Sainte-Marie-du-Mont": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Sainte-Mère-Église": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
+  "Stalingrad": { allies: { category: 'soviet', variation: 'Soviet Armed Forces' }, axis: { category: 'german', variation: 'German Army Winter Camo' } },
+  "Tobruk": { allies: { category: 'british', variation: 'British Eighth Army' }, axis: { category: 'german', variation: 'German Africa Corps' } },
+  "Utah Beach": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } }
+};
+
+mapSelect.addEventListener('change', () => {
+  const map = mapSelect.value;
+  if (!mapData[map]) {
+    mapResult.innerHTML = '';
+    return;
   }
-}
+  const { allies, axis } = mapData[map];
 
-function populateMapDropdown() {
-  for (const map in mapInfo) {
-    const option = document.createElement("option");
-    option.value = map;
-    option.textContent = map;
-    mapDropdown.appendChild(option);
-  }
-}
+  mapResult.innerHTML = `
+    <p>This map is played by:</p>
+    <div class="map-line">
+      <span>ALLIES:</span>
+      <button class="map-answer" data-cat="${allies.category}" data-var="${allies.variation}">
+        ${allies.variation}
+      </button>
+    </div>
+    <div class="map-line">
+      <span>AXIS:</span>
+      <button class="map-answer" data-cat="${axis.category}" data-var="${axis.variation}">
+        ${axis.variation}
+      </button>
+    </div>
+  `;
 
-mapDropdown.addEventListener("change", () => {
-  const selectedMap = mapDropdown.value;
-  const [allies, axis] = mapInfo[selectedMap] || [];
+  document.querySelectorAll('.map-answer').forEach(btn => {
+    btn.addEventListener('click', () => {
+      fromMapBlock = true;
 
-  if (allies && axis) {
-    mapResult.innerHTML = `On this map <span class="clickable">${allies}</span> is playing against <span class="clickable">${axis}</span>.`;
+      categorySelect.value = btn.dataset.cat;
+      updateVariations();
 
-    mapResult.querySelectorAll(".clickable").forEach(el => {
-      el.onclick = () => {
-        for (const key in imageMap) {
-          if (imageMap[key][el.textContent]) {
-            // ✅ Set correct faction
-            categorySelect.value = key;
-
-            // ✅ Load and show variation buttons
-            updateVariations();
-
-            // ✅ Auto-click exact variation match
-            [...variationButtons.children].forEach(btn => {
-              if (btn.textContent === el.textContent) btn.click();
-            });
-          }
+      document.querySelectorAll('#variation-buttons button').forEach(vb => {
+        if (vb.textContent === btn.dataset.var) {
+          vb.click();
         }
-      };
+      });
     });
-  }
+  });
 });
 
-populateCategories();
-updateVariations();
-populateMapDropdown();
+// Set initial faction/variation on load
+document.addEventListener('DOMContentLoaded', () => {
+  categorySelect.value = 'german';
+  updateVariations();
+});
+
+// Fade in page
+window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
+});
 
