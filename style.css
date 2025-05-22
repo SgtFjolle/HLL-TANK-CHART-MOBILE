@@ -67,7 +67,7 @@ h1 {
   flex-direction: column;
   flex: 1;
   justify-content: flex-start;
-  min-height: 140px; /* adjust if needed based on button size */
+  min-height: 155px; /* adjust if needed based on button size */
 }
 
 .faction-column {
