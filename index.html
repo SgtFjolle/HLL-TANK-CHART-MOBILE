@@ -13,17 +13,22 @@
       <button id="mode-toggle" onclick="toggleMode()">🌙</button>
     </div>
 
-    <div class="controls-row">
-      <select id="category-select"></select>
-      <button id="fullscreen-toggle" onclick="enterFullscreen()">⛶</button>
-    </div>
+  <div class="controls-row">
+  <div class="faction-column">
+    <label for="category-select">Select Faction:</label>
+    <select id="category-select"></select>
+  </div>
 
-    <div class="main-content">
-      <div class="image-block">
-        <img id="army-image" src="german.jpg" alt="Unit Image" />
-      </div>
-      <div id="variation-buttons" class="variation-buttons"></div>
-    </div>
+  <div class="variation-column">
+    <label>Select Variation:</label>
+    <div id="variation-buttons" class="variation-buttons"></div>
+  </div>
+</div>
+
+<div class="image-block">
+  <img id="army-image" src="german.jpg" alt="Unit Image" />
+  <button id="fullscreen-toggle" onclick="enterFullscreen()">⛶</button>
+</div>
 
     <div class="map-selector">
       <label for="map-dropdown">Select map:</label>
