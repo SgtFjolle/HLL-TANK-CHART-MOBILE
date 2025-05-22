@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HLL Unit Viewer (Mobile)</title>
+  <title>Tank Recognition Tool</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>HLL Unit Viewer</h1>
+      <h1>Tank Recognition Tool</h1>
       <button id="mode-toggle" onclick="toggleMode()">🌙</button>
     </div>
 
     <div class="controls-row">
       <select id="category-select"></select>
-      <div id="variation-buttons"></div>
       <button id="fullscreen-toggle" onclick="enterFullscreen()">⛶</button>
     </div>
 
-    <div class="image-block">
-      <img id="army-image" src="german.jpg" alt="Unit Image" />
+    <div class="main-content">
+      <div class="image-block">
+        <img id="army-image" src="german.jpg" alt="Unit Image" />
+      </div>
+      <div id="variation-buttons" class="variation-buttons"></div>
     </div>
 
     <div class="map-selector">
@@ -42,3 +44,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
