@@ -129,6 +129,15 @@ function enterFullscreen() {
   }
 }
 
+function exitFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else if (document.webkitFullscreenElement) {
+    document.webkitExitFullscreen();
+  } else if (document.msFullscreenElement) {
+    document.msExitFullscreen();
+  }
+}
 
 // Populate map dropdown and handle interaction
 function populateMapSelector() {
