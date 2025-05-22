@@ -100,7 +100,7 @@ if (!fromMapBlock) {
   if (firstBtn) firstBtn.click();
 }
 fromMapBlock = false;
-
+}
 
 // Show the selected image
 function showImage(category, variation) {
