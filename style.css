@@ -55,6 +55,26 @@ h1 {
   width: 100%;
   gap: 10px;
 }
+.faction-column,
+.variation-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.faction-column label,
+.variation-column label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: var(--text-color); /* Use themed text */
+}
+
+.variation-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
 
 select,
 button {
