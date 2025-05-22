@@ -1,0 +1,1 @@
+// Final Mobile script.js content
