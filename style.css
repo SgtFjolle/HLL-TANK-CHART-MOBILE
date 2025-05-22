@@ -72,12 +72,23 @@ h1 {
   color: var(--text-color); /* Use themed text */
 }
 
-.variation-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
+.variation-buttons button {
+  font-size: 0.85rem;           /* smaller but readable */
+  padding: 5px 10px;            /* tighter for mobile */
+  margin-bottom: 5px;           /* reduce vertical spacing */
+  max-width: 100%;              /* ensures no overflow */
+  white-space: normal;          /* allows wrapping */
+  word-break: break-word;       /* prevents long names from breaking layout */
+  min-height: 36px;             /* keeps tap targets mobile-friendly */
 }
+
+.faction-column select {
+  font-size: 0.85rem;         /* Match variation button text size */
+  padding: 5px 10px;          /* Tighter spacing */
+  min-height: 36px;           /* Matches button height for visual alignment */
+  max-width: 100%;            /* Prevents overflow */
+}
+
 
 select,
 button {
