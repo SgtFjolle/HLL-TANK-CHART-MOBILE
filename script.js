@@ -98,10 +98,9 @@ function updateVariations() {
 if (!fromMapBlock) {
   const firstBtn = variationButtons.querySelector('button');
   if (firstBtn) firstBtn.click();
-}
+ }
 fromMapBlock = false;
 }
-
 // Show the selected image
 function showImage(category, variation) {
   armyImage.classList.remove('visible');
