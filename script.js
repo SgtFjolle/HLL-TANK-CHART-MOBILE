@@ -29,6 +29,16 @@ let currentCategory = 'german';
 let currentVariation = '';
 let fromMapBlock = false; // Flag to track if the faction is selected from the map block
 
+// ✅ NEW: Populate faction dropdown
+function populateCategories() {
+  for (const faction in imageMap) {
+    const option = document.createElement("option");
+    option.value = faction;
+    option.textContent = faction.toUpperCase();
+    categorySelect.appendChild(option);
+  }
+}
+
 // Update variations
 function updateVariations() {
   const category = categorySelect.value;
@@ -145,8 +155,9 @@ mapSelect.addEventListener('change', () => {
   });
 });
 
-// Set initial faction/variation on load
+// ✅ UPDATED: Initialize dropdown and first variation
 document.addEventListener('DOMContentLoaded', () => {
+  populateCategories();           // New: populate dropdown
   categorySelect.value = 'german';
   updateVariations();
 });
@@ -155,4 +166,5 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('load', () => {
   document.body.classList.add('loaded');
 });
+
 
