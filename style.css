@@ -55,12 +55,21 @@ h1 {
   width: 100%;
   gap: 10px;
 }
-.faction-column,
-.variation-column {
+
+.faction-column {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
+
+.variation-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  min-height: 130px; /* adjust if needed based on button size */
+}
+
 .faction-column {
   justify-content: flex-start; /* ← Ensures dropdown and label stick to top */
 }
