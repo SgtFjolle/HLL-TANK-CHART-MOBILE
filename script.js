@@ -141,6 +141,15 @@ function exitFullscreen() {
 
 // Populate map dropdown and handle interaction
 function populateMapSelector() {
+  // Add placeholder as first option
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = '- Choose a map -';
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  mapSelect.appendChild(placeholder);
+
+  // Add all map options
   for (const map in mapData) {
     const opt = document.createElement('option');
     opt.value = map;
@@ -148,10 +157,14 @@ function populateMapSelector() {
     mapSelect.appendChild(opt);
   }
 
+  // Handle selection
   mapSelect.addEventListener('change', () => {
     const selectedMap = mapSelect.value;
     const data = mapData[selectedMap];
-    if (!data) return;
+    if (!data) {
+      mapResult.innerHTML = '';
+      return;
+    }
 
     mapResult.innerHTML = `
       <p>This map is played by:</p>
