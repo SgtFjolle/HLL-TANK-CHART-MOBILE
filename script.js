@@ -118,10 +118,17 @@ function toggleMode() {
 }
 
 // Toggle fullscreen mode
-fullscreenToggle.onclick = () => {
-  const isFullscreen = document.body.classList.toggle('fullscreen-mode');
-  fullscreenToggle.classList.toggle('active', isFullscreen);
-};
+function enterFullscreen() {
+  const image = document.getElementById('army-image');
+  if (image.requestFullscreen) {
+    image.requestFullscreen();
+  } else if (image.webkitRequestFullscreen) {
+    image.webkitRequestFullscreen();
+  } else if (image.msRequestFullscreen) {
+    image.msRequestFullscreen();
+  }
+}
+
 
 // Populate map dropdown and handle interaction
 function populateMapSelector() {
