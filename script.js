@@ -17,23 +17,34 @@ const imageMap = {
     "United States Army": "us.jpg",
     "United States Army Winter Camo": "us_winter.jpg"
   },
+  soviet: {
+    "Soviet Armed Forces": "soviet.jpg"
+  },
   british: {
     "British Army": "british.jpg",
     "British Eighth Army": "british_eighth.jpg"
-  },
-  soviet: {
-    "Soviet": "soviet.jpg"
   }
 };
 
 const mapInfo = {
-  "Stalingrad": ["Soviet", "German Army Winter Camo"],
-  "Kursk": ["Soviet", "German Army Winter Camo"],
-  "Kharkov": ["Soviet", "German Army Winter Camo"],
-  "Carentan": ["US", "German Army"],
-  "Utah Beach": ["US", "German Army"],
-  "Omaha Beach": ["US", "German Army"],
+  "Stalingrad": ["Soviet Armed Forces", "German Army Winter Camo"],
+  "Kursk": ["Soviet Armed Forces", "German Army Winter Camo"],
+  "Kharkov": ["Soviet Armed Forces", "German Army Winter Camo"],
+  "Carentan": ["United States Army", "German Army"],
+  "Utah Beach": ["United States Army", "German Army"],
+  "Omaha Beach": ["United States Army", "German Army"],
+  "Foy": ["United States Army Winter Camo", "German Army Winter Camo"],
+  "Hurtgen Forest": ["United States Army Winter Camo", "German Army Winter Camo"],
+  "Purple Heart Lane": ["United States Army", "German Army"],
+  "Sainte-Mère-Église": ["United States Army", "German Army"],
+  "Hill 400": ["United States Army Winter Camo", "German Army Winter Camo"],
+  "Remagen": ["United States Army", "German Army"],
   "El Alamein": ["British Eighth Army", "German Africa Corps"],
+  "Sainte-Marie-du-Mont": ["United States Army", "German Army"],
+  "Driel": ["British Army", "German Army"],
+  "St. Marie du Mont": ["United States Army", "German Army"],
+  "Hill 93": ["Soviet Armed Forces", "German Army"],
+  "Kherson": ["Soviet Armed Forces", "German Army Winter Camo"]
 };
 
 function populateCategories() {
@@ -47,8 +58,10 @@ function populateCategories() {
 
 function updateVariations() {
   variationButtons.innerHTML = "";
+
   const selectedFaction = categorySelect.value;
   const variations = imageMap[selectedFaction];
+
   for (const variation in variations) {
     const btn = document.createElement("button");
     btn.textContent = variation;
@@ -57,7 +70,10 @@ function updateVariations() {
     };
     variationButtons.appendChild(btn);
   }
-  armyImage.src = Object.values(variations)[0];
+
+  // ✅ Automatically select the first variation
+  const firstBtn = variationButtons.querySelector("button");
+  if (firstBtn) firstBtn.click();
 }
 
 function toggleMode() {
@@ -93,6 +109,7 @@ function populateMapDropdown() {
 mapDropdown.addEventListener("change", () => {
   const selectedMap = mapDropdown.value;
   const [allies, axis] = mapInfo[selectedMap] || [];
+
   if (allies && axis) {
     mapResult.innerHTML = `On this map <span class="clickable">${allies}</span> is playing against <span class="clickable">${axis}</span>.`;
 
@@ -100,8 +117,13 @@ mapDropdown.addEventListener("change", () => {
       el.onclick = () => {
         for (const key in imageMap) {
           if (imageMap[key][el.textContent]) {
+            // ✅ Set correct faction
             categorySelect.value = key;
+
+            // ✅ Load and show variation buttons
             updateVariations();
+
+            // ✅ Auto-click exact variation match
             [...variationButtons.children].forEach(btn => {
               if (btn.textContent === el.textContent) btn.click();
             });
@@ -115,3 +137,4 @@ mapDropdown.addEventListener("change", () => {
 populateCategories();
 updateVariations();
 populateMapDropdown();
+
