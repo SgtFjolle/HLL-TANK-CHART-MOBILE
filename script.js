@@ -1,11 +1,18 @@
-// Main controls
+// DOM references
 const categorySelect = document.getElementById('category-select');
 const variationButtons = document.getElementById('variation-buttons');
 const armyImage = document.getElementById('army-image');
-const modeToggle = document.getElementById('mode-toggle');
 const fullscreenToggle = document.getElementById('fullscreen-toggle');
+const modeToggle = document.getElementById('mode-toggle');
+const mapSelect = document.getElementById('map-dropdown');
+const mapResult = document.getElementById('map-result');
 
-// Image map data
+// Internal state
+let currentCategory = 'german';
+let currentVariation = '';
+let fromMapBlock = false;
+
+// Image data (faction variations)
 const imageMap = {
   german: {
     "German Army": "german.jpg",
@@ -25,75 +32,7 @@ const imageMap = {
   }
 };
 
-let currentCategory = 'german';
-let currentVariation = '';
-let fromMapBlock = false; // Flag to track if the faction is selected from the map block
-
-// ✅ NEW: Populate faction dropdown
-function populateCategories() {
-  for (const faction in imageMap) {
-    const option = document.createElement("option");
-    option.value = faction;
-    option.textContent = faction.toUpperCase();
-    categorySelect.appendChild(option);
-  }
-}
-
-// Update variations
-function updateVariations() {
-  const category = categorySelect.value;
-  currentCategory = category;
-  const variations = imageMap[category];
-
-  variationButtons.innerHTML = "";
-  Object.keys(variations).forEach((variation, index) => {
-    const btn = document.createElement('button');
-    btn.textContent = variation;
-    btn.onclick = () => {
-      showImage(category, variation);
-      currentVariation = variation;
-      document.querySelectorAll('#variation-buttons button')
-              .forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    };
-    variationButtons.appendChild(btn);
-
-    // Auto-select first variation unless coming from map block
-    if (!fromMapBlock && index === 0) {
-      btn.click();
-    }
-  });
-
-  fromMapBlock = false; // Reset after use
-}
-
-// Show the image based on the selected variation
-function showImage(category, variation) {
-  armyImage.classList.remove('visible'); // Reset fade-in
-  armyImage.src = imageMap[category][variation];
-  armyImage.alt = variation;
-
-  setTimeout(() => {
-    armyImage.classList.add('visible'); // Trigger fade-in
-  }, 100);
-}
-
-// Toggle between dark and light mode
-function toggleMode() {
-  const isLight = document.body.classList.toggle('light-mode');
-  modeToggle.textContent = isLight ? '☀️' : '🌙';
-}
-
-// Fullscreen toggle
-fullscreenToggle.onclick = () => {
-  const isFs = document.body.classList.toggle('fullscreen-mode');
-  fullscreenToggle.classList.toggle('active', isFs);
-};
-
-// Map selector
-const mapSelect = document.getElementById('map-dropdown');
-const mapResult = document.getElementById('map-result');
-
+// Map-to-faction logic
 const mapData = {
   "Carentan": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
   "Driel": { allies: { category: 'british', variation: 'British Army' }, axis: { category: 'german', variation: 'German Army' } },
@@ -115,56 +54,112 @@ const mapData = {
   "Utah Beach": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } }
 };
 
-mapSelect.addEventListener('change', () => {
-  const map = mapSelect.value;
-  if (!mapData[map]) {
-    mapResult.innerHTML = '';
-    return;
+// Populate the dropdown
+function populateCategories() {
+  categorySelect.innerHTML = '';
+  for (const key in imageMap) {
+    const option = document.createElement('option');
+    option.value = key;
+    option.textContent = key.toUpperCase();
+    categorySelect.appendChild(option);
   }
-  const { allies, axis } = mapData[map];
+}
 
-  mapResult.innerHTML = `
-    <p>This map is played by:</p>
-    <div class="map-line">
-      <span>ALLIES:</span>
-      <button class="map-answer" data-cat="${allies.category}" data-var="${allies.variation}">
-        ${allies.variation}
-      </button>
-    </div>
-    <div class="map-line">
-      <span>AXIS:</span>
-      <button class="map-answer" data-cat="${axis.category}" data-var="${axis.variation}">
-        ${axis.variation}
-      </button>
-    </div>
-  `;
+// Populate variation buttons
+function updateVariations() {
+  const category = categorySelect.value;
+  const variations = imageMap[category];
+  variationButtons.innerHTML = '';
 
-  document.querySelectorAll('.map-answer').forEach(btn => {
-    btn.addEventListener('click', () => {
-      fromMapBlock = true;
+  Object.keys(variations).forEach((variation, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = variation;
+    btn.onclick = () => {
+      currentCategory = category;
+      currentVariation = variation;
+      showImage(category, variation);
+      [...variationButtons.children].forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    variationButtons.appendChild(btn);
+    if (!fromMapBlock && i === 0) btn.click();
+  });
 
-      categorySelect.value = btn.dataset.cat;
-      updateVariations();
+  fromMapBlock = false;
+}
 
-      document.querySelectorAll('#variation-buttons button').forEach(vb => {
-        if (vb.textContent === btn.dataset.var) {
-          vb.click();
-        }
+// Show the selected image
+function showImage(category, variation) {
+  armyImage.classList.remove('visible');
+  armyImage.src = imageMap[category][variation];
+  armyImage.alt = variation;
+  setTimeout(() => {
+    armyImage.classList.add('visible');
+  }, 100);
+}
+
+// Toggle theme
+function toggleMode() {
+  const light = document.body.classList.toggle('light-mode');
+  modeToggle.textContent = light ? '☀️' : '🌙';
+}
+
+// Toggle fullscreen mode
+fullscreenToggle.onclick = () => {
+  const isFullscreen = document.body.classList.toggle('fullscreen-mode');
+  fullscreenToggle.classList.toggle('active', isFullscreen);
+};
+
+// Populate map dropdown and handle interaction
+function populateMapSelector() {
+  for (const map in mapData) {
+    const opt = document.createElement('option');
+    opt.value = map;
+    opt.textContent = map;
+    mapSelect.appendChild(opt);
+  }
+
+  mapSelect.addEventListener('change', () => {
+    const selectedMap = mapSelect.value;
+    const data = mapData[selectedMap];
+    if (!data) return;
+
+    mapResult.innerHTML = `
+      <p>This map is played by:</p>
+      <div class="map-line">
+        <span>ALLIES:</span>
+        <button class="map-answer" data-cat="${data.allies.category}" data-var="${data.allies.variation}">${data.allies.variation}</button>
+      </div>
+      <div class="map-line">
+        <span>AXIS:</span>
+        <button class="map-answer" data-cat="${data.axis.category}" data-var="${data.axis.variation}">${data.axis.variation}</button>
+      </div>
+    `;
+
+    document.querySelectorAll('.map-answer').forEach(btn => {
+      btn.addEventListener('click', () => {
+        categorySelect.value = btn.dataset.cat;
+        fromMapBlock = true;
+        updateVariations();
+        [...variationButtons.children].forEach(vb => {
+          if (vb.textContent === btn.dataset.var) vb.click();
+        });
       });
     });
   });
-});
+}
 
-// ✅ UPDATED: Initialize dropdown and first variation
+// Initial page load
 document.addEventListener('DOMContentLoaded', () => {
-  populateCategories();           // New: populate dropdown
+  populateCategories();
   categorySelect.value = 'german';
   updateVariations();
+  populateMapSelector();
 });
 
-// Fade in page
-window.addEventListener('load', () => {
+// Fade in body
+window.onload = () => {
   document.body.classList.add('loaded');
-});
+};
 
 
