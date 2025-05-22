@@ -160,6 +160,10 @@ button {
   margin-top: 4px;
 }
 
+.map-line {
+  margin-bottom: 10px; /* or 12px if you want even more space */
+}
+
 .map-result .clickable {
   text-decoration: underline;
   cursor: pointer;
