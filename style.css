@@ -192,4 +192,10 @@ button {
   display: block;
 }
 
+:fullscreen #fullscreen-toggle,
+:-webkit-full-screen #fullscreen-toggle {
+  display: none;
+}
+
+
 
