@@ -34,7 +34,6 @@ const mapInfo = {
   "Utah Beach": ["US", "German Army"],
   "Omaha Beach": ["US", "German Army"],
   "El Alamein": ["British Eighth Army", "German Africa Corps"],
-  // Add other maps as needed
 };
 
 function populateCategories() {
@@ -62,18 +61,21 @@ function updateVariations() {
 }
 
 function toggleMode() {
-  document.body.classList.toggle("dark");
+  document.body.classList.toggle("light-mode");
+  const isLight = document.body.classList.contains("light-mode");
+  document.getElementById("mode-toggle").textContent = isLight ? "☀️" : "🌙";
 }
 
 function enterFullscreen() {
-  const src = armyImage.src;
-  fullscreenImage.src = src;
+  fullscreenImage.src = armyImage.src;
   fullscreenOverlay.classList.add("active");
   document.documentElement.requestFullscreen();
+  fullscreenToggle.style.display = "none";
 }
 
 function exitFullscreen() {
   fullscreenOverlay.classList.remove("active");
+  fullscreenToggle.style.display = "inline-block";
   if (document.fullscreenElement) {
     document.exitFullscreen();
   }
