@@ -60,7 +60,14 @@ function populateCategories() {
   for (const key in imageMap) {
     const option = document.createElement('option');
     option.value = key;
-    option.textContent = key.toUpperCase();
+    const displayNames = {
+  german: "AXIS - German",
+  us: "ALLIES - United States",
+  soviet: "ALLIES - Soviet",
+  british: "ALLIES - British"
+};
+option.textContent = displayNames[key] || key;
+
     categorySelect.appendChild(option);
   }
 }
