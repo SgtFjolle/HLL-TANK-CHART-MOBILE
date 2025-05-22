@@ -119,7 +119,7 @@ function toggleMode() {
 
 // Toggle fullscreen mode
 function enterFullscreen() {
-  const image = document.getElementById('army-image');
+  const imageBlock = document.querySelector('.image-block');
   if (image.requestFullscreen) {
     image.requestFullscreen();
   } else if (image.webkitRequestFullscreen) {
