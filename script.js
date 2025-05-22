@@ -81,7 +81,7 @@ fullscreenToggle.onclick = () => {
 };
 
 // Map selector
-const mapSelect = document.getElementById('map-select');
+const mapSelect = document.getElementById('map-dropdown');
 const mapResult = document.getElementById('map-result');
 
 const mapData = {
