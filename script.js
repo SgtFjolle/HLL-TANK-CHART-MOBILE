@@ -120,12 +120,12 @@ function toggleMode() {
 // Toggle fullscreen mode
 function enterFullscreen() {
   const imageBlock = document.querySelector('.image-block');
-  if (image.requestFullscreen) {
-    image.requestFullscreen();
-  } else if (image.webkitRequestFullscreen) {
-    image.webkitRequestFullscreen();
-  } else if (image.msRequestFullscreen) {
-    image.msRequestFullscreen();
+  if (imageBlock.requestFullscreen) {
+    imageBlock.requestFullscreen();
+  } else if (imageBlock.webkitRequestFullscreen) {
+    imageBlock.webkitRequestFullscreen();
+  } else if (imageBlock.msRequestFullscreen) {
+    imageBlock.msRequestFullscreen();
   }
 }
 
