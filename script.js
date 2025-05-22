@@ -1,5 +1,10 @@
 // DOM references
 const categorySelect = document.getElementById('category-select');
+categorySelect.addEventListener('change', () => {
+  fromMapBlock = false;
+  updateVariations();
+});
+
 const variationButtons = document.getElementById('variation-buttons');
 const armyImage = document.getElementById('army-image');
 const fullscreenToggle = document.getElementById('fullscreen-toggle');
@@ -67,7 +72,6 @@ function populateCategories() {
   british: "ALLIES - British"
 };
 option.textContent = displayNames[key] || key;
-
     categorySelect.appendChild(option);
   }
 }
@@ -88,12 +92,15 @@ function updateVariations() {
       [...variationButtons.children].forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     };
-    variationButtons.appendChild(btn);
-    if (!fromMapBlock && i === 0) btn.click();
-  });
+  variationButtons.appendChild(btn);
+});
 
-  fromMapBlock = false;
+if (!fromMapBlock) {
+  const firstBtn = variationButtons.querySelector('button');
+  if (firstBtn) firstBtn.click();
 }
+fromMapBlock = false;
+
 
 // Show the selected image
 function showImage(category, variation) {
