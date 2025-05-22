@@ -1,1 +1,123 @@
-/* Final Mobile style.css content */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #111;
+  color: #f4f4f4;
+  overflow-y: scroll;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+#mode-toggle {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+.controls-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+select,
+button {
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+#variation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#variation-buttons button {
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.image-block img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.map-selector {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 6px;
+}
+
+.map-result {
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+.banner {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+#fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  flex-direction: column;
+}
+
+#fullscreen-overlay.active {
+  display: flex;
+}
+
+#fullscreen-image {
+  transform: rotate(90deg);
+  width: 100vh;
+  height: auto;
+  max-height: 100vw;
+}
+
+#exit-fullscreen {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+}
