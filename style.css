@@ -5,10 +5,10 @@
   --highlight-color: #FFD700;
 }
 body.light-mode {
-  --bg-color: #f4f4f4;            /* Soft light gray */
-  --text-color: #222222;          /* Gentle dark text */
-  --button-bg: #e0e0e0;           /* Muted buttons */
-  --highlight-color: #3366cc;     /* Calm blue for clickable map options */
+  --bg-color: #f4f4f4;
+  --text-color: #222222;
+  --button-bg: #e0e0e0;
+  --highlight-color: #3366cc;
 }
 body {
   margin: 0;
@@ -51,7 +51,7 @@ h1 {
 .controls-row {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* ✅ aligns both columns to the top */
+  align-items: flex-start;
   width: 100%;
   gap: 10px;
 }
@@ -60,6 +60,7 @@ h1 {
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: flex-start;
 }
 
 .variation-column {
@@ -67,37 +68,38 @@ h1 {
   flex-direction: column;
   flex: 1;
   justify-content: flex-start;
-  min-height: 165px; /* adjust if needed based on button size */
-}
-
-.faction-column {
-  justify-content: flex-start; /* ← Ensures dropdown and label stick to top */
+  min-height: 165px;
 }
 
 .faction-column label,
 .variation-column label {
   font-size: 0.9rem;
   margin-bottom: 5px;
-  color: var(--text-color); /* Use themed text */
+  color: var(--text-color);
 }
 
+.variation-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .variation-buttons button {
-  font-size: 0.85rem;           /* smaller but readable */
-  padding: 5px 10px;            /* tighter for mobile */
-  margin-bottom: 5px;           /* reduce vertical spacing */
-  max-width: 100%;              /* ensures no overflow */
-  white-space: normal;          /* allows wrapping */
-  word-break: break-word;       /* prevents long names from breaking layout */
-  min-height: 36px;             /* keeps tap targets mobile-friendly */
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  min-height: 36px;
 }
 
 .faction-column select {
-  font-size: 0.85rem;         /* Match variation button text size */
-  padding: 5px 10px;          /* Tighter spacing */
-  min-height: 36px;           /* Matches button height for visual alignment */
-  max-width: 100%;            /* Prevents overflow */
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  min-height: 36px;
+  max-width: 100%;
 }
-
 
 select,
 button {
@@ -122,7 +124,6 @@ button {
   position: relative;
   flex: 1;
 }
-
 .image-block img {
   width: 100%;
   height: auto;
@@ -138,32 +139,19 @@ button {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-.variation-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.variation-buttons button {
-  width: 100%;
-}
-
 .map-selector {
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 6px;
 }
-
 .map-result {
   font-size: 1rem;
   margin-top: 4px;
 }
-
 .map-line {
-  margin-bottom: 10px; /* or 12px if you want even more space */
+  margin-bottom: 10px;
 }
-
 .map-result .clickable {
   text-decoration: underline;
   cursor: pointer;
@@ -177,7 +165,7 @@ button {
   margin-top: 20px;
 }
 
-/* Make fullscreen overlay flex-centered and image responsive */
+/* Fullscreen overlay */
 #fullscreen-overlay {
   display: none;
   position: fixed;
@@ -187,15 +175,13 @@ button {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  flex-direction: column; /* 👈 Ensures vertical centering */
+  flex-direction: column;
 }
-
-
 #fullscreen-overlay.active {
   display: flex;
 }
 
-/* Responsive image sizing — maintain aspect ratio */
+/* Proper image handling in fullscreen */
 :fullscreen .image-block,
 :-webkit-full-screen .image-block {
   display: flex;
@@ -208,12 +194,32 @@ button {
 :fullscreen #army-image,
 :-webkit-full-screen #army-image {
   object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
   width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
   margin: auto;
   display: block;
+}
+
+#fullscreen-image {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
+#fullscreen-image,
+:fullscreen #army-image,
+:-webkit-full-screen #army-image {
+  object-fit: contain;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: auto;
 }
 
 #exit-fullscreen {
@@ -226,27 +232,23 @@ button {
   color: var(--text-color);
   cursor: pointer;
   z-index: 20;
-  display: none; /* hidden by default */
+  display: none;
 }
 
-/* Show only when in fullscreen */
 :fullscreen #exit-fullscreen,
 :-webkit-full-screen #exit-fullscreen {
   display: block;
 }
-
 :fullscreen #fullscreen-toggle,
 :-webkit-full-screen #fullscreen-toggle {
   display: none;
 }
 
-/* Pressed effect (mobile & desktop) */
+/* Button interaction enhancements */
 .variation-buttons button:active {
   transform: scale(0.97);
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
-
-/* Visually highlight selected (clicked) variation */
 .variation-buttons button.active {
   background-color: #777;
   color: #fff5d8;
@@ -254,6 +256,3 @@ button {
   transform: scale(0.98);
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
 }
-
-
-
