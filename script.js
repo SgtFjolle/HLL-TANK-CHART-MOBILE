@@ -1,10 +1,5 @@
 // DOM references
 const categorySelect = document.getElementById('category-select');
-categorySelect.addEventListener('change', () => {
-  fromMapBlock = false;
-  updateVariations();
-});
-
 const variationButtons = document.getElementById('variation-buttons');
 const armyImage = document.getElementById('army-image');
 const fullscreenToggle = document.getElementById('fullscreen-toggle');
@@ -12,12 +7,10 @@ const modeToggle = document.getElementById('mode-toggle');
 const mapSelect = document.getElementById('map-dropdown');
 const mapResult = document.getElementById('map-result');
 
-// Internal state
 let currentCategory = 'german';
 let currentVariation = '';
 let fromMapBlock = false;
 
-// Image data (faction variations)
 const imageMap = {
   german: {
     "German Army": "german.jpg",
@@ -37,7 +30,6 @@ const imageMap = {
   }
 };
 
-// Map-to-faction logic
 const mapData = {
   "Carentan": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } },
   "Driel": { allies: { category: 'british', variation: 'British Army' }, axis: { category: 'german', variation: 'German Army' } },
@@ -59,30 +51,29 @@ const mapData = {
   "Utah Beach": { allies: { category: 'us', variation: 'United States Army' }, axis: { category: 'german', variation: 'German Army' } }
 };
 
-// Populate the dropdown
 function populateCategories() {
   categorySelect.innerHTML = '';
+  const displayNames = {
+    german: "AXIS - German",
+    us: "ALLIES - United States",
+    soviet: "ALLIES - Soviet",
+    british: "ALLIES - British"
+  };
+
   for (const key in imageMap) {
     const option = document.createElement('option');
     option.value = key;
-    const displayNames = {
-  german: "AXIS - German",
-  us: "ALLIES - United States",
-  soviet: "ALLIES - Soviet",
-  british: "ALLIES - British"
-};
-option.textContent = displayNames[key] || key;
+    option.textContent = displayNames[key] || key;
     categorySelect.appendChild(option);
   }
 }
 
-// Populate variation buttons
 function updateVariations() {
   const category = categorySelect.value;
   const variations = imageMap[category];
   variationButtons.innerHTML = '';
 
-  Object.keys(variations).forEach((variation, i) => {
+  Object.keys(variations).forEach(variation => {
     const btn = document.createElement('button');
     btn.textContent = variation;
     btn.onclick = () => {
@@ -92,16 +83,16 @@ function updateVariations() {
       [...variationButtons.children].forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     };
-  variationButtons.appendChild(btn);
-});
+    variationButtons.appendChild(btn);
+  });
 
-if (!fromMapBlock) {
-  const firstBtn = variationButtons.querySelector('button');
-  if (firstBtn) firstBtn.click();
- }
-fromMapBlock = false;
+  if (!fromMapBlock) {
+    const firstBtn = variationButtons.querySelector('button');
+    if (firstBtn) firstBtn.click();
+  }
+  fromMapBlock = false;
 }
-// Show the selected image
+
 function showImage(category, variation) {
   armyImage.classList.remove('visible');
   armyImage.src = imageMap[category][variation];
@@ -111,13 +102,11 @@ function showImage(category, variation) {
   }, 100);
 }
 
-// Toggle theme
 function toggleMode() {
   const light = document.body.classList.toggle('light-mode');
   modeToggle.textContent = light ? '☀️' : '🌙';
 }
 
-// Toggle fullscreen mode
 function enterFullscreen() {
   const imageBlock = document.querySelector('.image-block');
   if (imageBlock.requestFullscreen) {
@@ -139,9 +128,7 @@ function exitFullscreen() {
   }
 }
 
-// Populate map dropdown and handle interaction
 function populateMapSelector() {
-  // Add placeholder as first option
   const placeholder = document.createElement('option');
   placeholder.value = '';
   placeholder.textContent = '- Choose a map -';
@@ -149,7 +136,6 @@ function populateMapSelector() {
   placeholder.selected = true;
   mapSelect.appendChild(placeholder);
 
-  // Add all map options
   for (const map in mapData) {
     const opt = document.createElement('option');
     opt.value = map;
@@ -157,7 +143,6 @@ function populateMapSelector() {
     mapSelect.appendChild(opt);
   }
 
-  // Handle selection
   mapSelect.addEventListener('change', () => {
     const selectedMap = mapSelect.value;
     const data = mapData[selectedMap];
@@ -191,7 +176,6 @@ function populateMapSelector() {
   });
 }
 
-// Initial page load
 document.addEventListener('DOMContentLoaded', () => {
   populateCategories();
   categorySelect.value = 'german';
@@ -199,9 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
   populateMapSelector();
 });
 
-// Fade in body
 window.onload = () => {
   document.body.classList.add('loaded');
 };
+
 
 
