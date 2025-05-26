@@ -4,12 +4,14 @@
   --button-bg: #2a2a2a;
   --highlight-color: #FFD700;
 }
+
 body.light-mode {
   --bg-color: #f4f4f4;
   --text-color: #222222;
   --button-bg: #e0e0e0;
   --highlight-color: #3366cc;
 }
+
 body {
   margin: 0;
   font-family: sans-serif;
@@ -19,33 +21,31 @@ body {
 }
 
 .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
-  padding: 16px;
-  max-width: 100%;
-  box-sizing: border-box;
+  overflow: visible;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   align-items: center;
 }
-
 h1 {
-  font-size: 1.5rem;
+  font-size: 2em;
   margin: 0;
   color: var(--text-color);
 }
-
 #mode-toggle {
-  font-size: 1.2rem;
+  font-size: 1.2em;
   background: none;
   border: none;
   color: inherit;
+  cursor: pointer;
 }
 
 .controls-row {
@@ -60,7 +60,6 @@ h1 {
   display: flex;
   flex-direction: column;
   flex: 1;
-  justify-content: flex-start;
 }
 
 .variation-column {
@@ -92,24 +91,34 @@ h1 {
   white-space: normal;
   word-break: break-word;
   min-height: 36px;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
 }
 
-.faction-column select {
+/* Button interaction enhancements */
+.variation-buttons button:active {
+  transform: scale(0.97);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+.variation-buttons button.active {
+  background-color: #777;
+  color: #fff5d8;
+  border: 1px solid #444;
+  transform: scale(0.98);
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+select {
   font-size: 0.85rem;
   padding: 5px 10px;
   min-height: 36px;
   max-width: 100%;
-}
-
-select,
-button {
-  font-size: 1rem;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
   background-color: var(--button-bg);
   color: var(--text-color);
   border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
 }
 
 .main-content {
@@ -137,6 +146,35 @@ button {
   left: 3px;
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#exit-fullscreen {
+  position: absolute;
+  top: 10px;
+  left: 40px;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Show exit button only in fullscreen */
+:fullscreen #exit-fullscreen,
+:-webkit-full-screen #exit-fullscreen {
+  display: block;
+}
+:fullscreen #fullscreen-toggle,
+:-webkit-full-screen #fullscreen-toggle {
+  display: none;
 }
 
 .map-selector {
@@ -165,77 +203,25 @@ button {
   margin-top: 20px;
 }
 
-/* Fullscreen fixes */
+/* Fullscreen image fix */
+:fullscreen #army-image,
+:-webkit-full-screen #army-image {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: auto;
+}
+
+/* Fullscreen layout container fix */
 :fullscreen .image-block,
 :-webkit-full-screen .image-block {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: black;
-  z-index: 9999;
+  height: 100vh;
+  width: 100vw;
 }
 
-/* Image inside fullscreen */
-:fullscreen #army-image,
-:-webkit-full-screen #army-image {
-  object-fit: contain;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  display: block;
-  margin: auto;
-}
-
-/* Optional compatibility block */
-#fullscreen-image,
-:fullscreen #army-image,
-:-webkit-full-screen #army-image {
-  object-fit: contain;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  display: block;
-  margin: auto;
-}
-
-#exit-fullscreen {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 1.2rem;
-  background: transparent;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  z-index: 20;
-  display: none;
-}
-
-:fullscreen #exit-fullscreen,
-:-webkit-full-screen #exit-fullscreen {
-  display: block;
-}
-:fullscreen #fullscreen-toggle,
-:-webkit-full-screen #fullscreen-toggle {
-  display: none;
-}
-
-/* Button interactions */
-.variation-buttons button:active {
-  transform: scale(0.97);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-}
-.variation-buttons button.active {
-  background-color: #777;
-  color: #fff5d8;
-  border: 1px solid #444;
-  transform: scale(0.98);
-  box-shadow: 0 0 6px rgba(0,0,0,0.3);
-}
