@@ -243,11 +243,11 @@ select {
 }
 
 .map-answer {
-  background: none;
+  background-color: #444;
+  color: #fff5d8;
   border: none;
-  color: var(--highlight-color);
+  padding: 6px 10px;
+  border-radius: 4px;
   cursor: pointer;
-  padding: 4px 8px;
-  font-weight: bold;
-  text-decoration: underline;
+  transition: background-color 0.3s;
 }
