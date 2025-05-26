@@ -177,37 +177,40 @@ button {
   margin-top: 20px;
 }
 
+/* Make fullscreen overlay flex-centered and image responsive */
 #fullscreen-overlay {
+  display: none;
   position: fixed;
   inset: 0;
   background: black;
-  display: none;
+  z-index: 9999;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  padding: 10px;
 }
 
 #fullscreen-overlay.active {
   display: flex;
 }
 
+/* Responsive image sizing — maintain aspect ratio */
 #fullscreen-image {
-  width: 100%;
-  height: auto;
+  max-width: 100%;
   max-height: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
 }
 
 :fullscreen #army-image,
 :-webkit-full-screen #army-image {
-  display: block;
+  object-fit: contain;
+  width: auto;
+  height: auto;
   max-width: 100%;
-  max-height: 100vh;
+  max-height: 100%;
   margin: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: block;
 }
 
 #exit-fullscreen {
