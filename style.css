@@ -251,3 +251,11 @@ select {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
+:fullscreen {
+  touch-action: pinch-zoom;
+}
+
+:-webkit-full-screen {
+  touch-action: pinch-zoom;
+}
