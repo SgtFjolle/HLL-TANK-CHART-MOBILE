@@ -6,16 +6,18 @@
 }
 
 body.light-mode {
-  --bg-color: #f4f4f4;
-  --text-color: #222222;
-  --button-bg: #e0e0e0;
+  background: url('TankRec_light3.png') no-repeat center center fixed;
+  background-size: cover;
+  --text-color: #000;
+  --button-bg: #FFF5D8;
   --highlight-color: #3366cc;
 }
 
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: var(--bg-color);
+  background: url('TankRec_background.png') no-repeat center center fixed;
+  background-size: cover;
   color: var(--text-color);
   overflow-y: scroll;
 }
