@@ -261,3 +261,12 @@ select {
 :-webkit-full-screen {
   touch-action: pinch-zoom;
 }
+
+body.light-mode .variation-buttons button:active {
+  background-color: #d4cdb8; /* softer light press color */
+}
+
+body.light-mode .map-answer {
+  background-color: #FFF5D8; /* lighter background for light mode */
+  color: #000; /* optional: dark text for contrast */
+}
