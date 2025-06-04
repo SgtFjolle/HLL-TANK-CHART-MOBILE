@@ -6,8 +6,7 @@
 }
 
 body.light-mode {
-  background: url('TankRec_light3.png') no-repeat center center fixed;
-  background-size: cover;
+  background: none;
   --text-color: #000;
   --button-bg: #FFF5D8;
   --highlight-color: #e8e5dc;
@@ -16,10 +15,10 @@ body.light-mode {
 body {
   margin: 0;
   font-family: sans-serif;
-  background: url('TankRec_background.png') no-repeat center center fixed;
-  background-size: cover;
+  background: none;
   color: var(--text-color);
   overflow-y: scroll;
+  position: relative;
 }
 
 .container {
@@ -270,3 +269,31 @@ body.light-mode .map-answer {
   background-color: #FFF5D8; /* lighter background for light mode */
   color: #000; /* optional: dark text for contrast */
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url('TankRec_background.png') no-repeat center center;
+  background-size: cover;
+  will-change: transform;
+}
+
+body.light-mode::before {
+  background-image: url('TankRec_light3.png');
+}
+
+.variation-disabled {
+  background-color: #888;
+  color: #eee;
+  border: 1px dashed #aaa;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+body.light-mode .variation-disabled {
+  background-color: #ddd;
+  color: #444;
+  border: 1px dashed #999;
+}
+
