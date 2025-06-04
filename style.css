@@ -270,21 +270,26 @@ body.light-mode .map-answer {
   color: #000; /* optional: dark text for contrast */
 }
 
+#bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
 #bg-layer {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: -1;
   background: url('TankRec_background.png') no-repeat center center;
   background-size: cover;
   pointer-events: none;
-  will-change: opacity; /* forces browser to treat it as static */
-  overscroll-behavior: none;
-  transform: translateZ(0); /* triggers GPU compositing */
 }
-
 body.light-mode #bg-layer {
   background-image: url('TankRec_light3.png');
 }
