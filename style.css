@@ -270,18 +270,19 @@ body.light-mode .map-answer {
   color: #000; /* optional: dark text for contrast */
 }
 
-body::before {
-  content: "";
+#bg-layer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: -1;
   background: url('TankRec_background.png') no-repeat center center;
   background-size: cover;
-  background-attachment: scroll; /* ✅ this locks it visually */
-  will-change: transform;
+  pointer-events: none;
 }
 
-body.light-mode::before {
+body.light-mode #bg-layer {
   background-image: url('TankRec_light3.png');
 }
 
