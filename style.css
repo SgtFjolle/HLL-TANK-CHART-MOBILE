@@ -274,13 +274,15 @@ body.light-mode .map-answer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   z-index: -1;
-  background: url('TankRec_background.png') center center no-repeat;
-  background-size: 100% 100%; /* <- Key change */
+  background: url('TankRec_background.png') no-repeat center center;
+  background-size: cover;
   pointer-events: none;
+  will-change: opacity; /* forces browser to treat it as static */
   overscroll-behavior: none;
+  transform: translateZ(0); /* triggers GPU compositing */
 }
 
 body.light-mode #bg-layer {
