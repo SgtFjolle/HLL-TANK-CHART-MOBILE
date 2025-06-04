@@ -28,9 +28,10 @@ const imageMap = {
     "United States Army": "us.jpg",
     "United States Army Winter Camo": "us_winter.jpg"
   },
-  soviet: {
-    "Soviet Armed Forces": "soviet.jpg"
-  },
+soviet: {
+  "Soviet Armed Forces": "soviet.jpg",
+  "Soviet Winter Camo – Coming in Patch 17.1": null
+},
   british: {
     "British Army": "british.jpg",
     "British Eighth Army": "british_eighth.jpg"
@@ -85,22 +86,31 @@ function updateVariations() {
   Object.keys(variations).forEach((variation, i) => {
     const btn = document.createElement('button');
     btn.textContent = variation;
-    btn.onclick = () => {
-      currentCategory = category;
-      currentVariation = variation;
-      showImage(category, variation);
-      [...variationButtons.children].forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    };
-  variationButtons.appendChild(btn);
-});
 
-if (!fromMapBlock) {
-  const firstBtn = variationButtons.querySelector('button');
-  if (firstBtn) firstBtn.click();
- }
-fromMapBlock = false;
+    if (!variations[variation]) {
+      btn.disabled = true;
+      btn.classList.add('variation-disabled');
+    } else {
+      btn.onclick = () => {
+        currentCategory = category;
+        currentVariation = variation;
+        showImage(category, variation);
+        [...variationButtons.children].forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      };
+    }
+
+    variationButtons.appendChild(btn);
+
+    // Auto-select first valid variation if not from map
+    if (!fromMapBlock && i === 0 && variations[variation]) {
+      btn.click();
+    }
+  });
+
+  fromMapBlock = false;
 }
+
 // Show the selected image
 function showImage(category, variation) {
   armyImage.classList.remove('visible');
